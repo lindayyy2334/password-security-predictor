@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 
 # ==============================
-# Model Parameters (Replace with your trained values if needed)
+# Model Parameters (Replace with your trained values)
 # ==============================
 w = 1.5
 b = -5.0
@@ -22,70 +22,71 @@ st.markdown("Estimate how long a password would take to crack using a predictive
 st.divider()
 
 # ==============================
-# User Input
+# User Input: Enter Password
 # ==============================
-length = st.number_input(
-    "Enter password length:",
-    min_value=4,
-    max_value=32,
-    value=8,
-    step=1
-)
+password = st.text_input("Enter your password:")
 
-# ==============================
-# Prediction
-# ==============================
-log_seconds = w * length + b
-seconds = np.exp(log_seconds)
+if password:  # Only calculate if something is entered
+    length = len(password)
+    st.write(f"Password Length: {length} characters")
 
-# ==============================
-# Convert to Human-Readable Time
-# ==============================
-if seconds >= 31536000:
-    display_time = f"{seconds/31536000:.2f} years"
-elif seconds >= 86400:
-    display_time = f"{seconds/86400:.2f} days"
-elif seconds >= 3600:
-    display_time = f"{seconds/3600:.2f} hours"
-elif seconds >= 60:
-    display_time = f"{seconds/60:.2f} minutes"
+    # ==============================
+    # Prediction
+    # ==============================
+    log_seconds = w * length + b
+    seconds = np.exp(log_seconds)
+
+    # ==============================
+    # Convert to Human-Readable Time
+    # ==============================
+    if seconds >= 31536000:
+        display_time = f"{seconds/31536000:.2f} years"
+    elif seconds >= 86400:
+        display_time = f"{seconds/86400:.2f} days"
+    elif seconds >= 3600:
+        display_time = f"{seconds/3600:.2f} hours"
+    elif seconds >= 60:
+        display_time = f"{seconds/60:.2f} minutes"
+    else:
+        display_time = f"{seconds:.2f} seconds"
+
+    # ==============================
+    # Security Verdict
+    # ==============================
+    if length < 8:
+        verdict = "🔴 DANGER"
+        color = "red"
+    elif length < 12:
+        verdict = "🟠 WEAK"
+        color = "orange"
+    else:
+        verdict = "🟢 SECURE"
+        color = "green"
+
+    # ==============================
+    # Display Results
+    # ==============================
+    st.subheader("Prediction Result")
+    st.write(f"**Estimated Crack Time:** {display_time}")
+    st.markdown(f"**Security Verdict:** :{color}[{verdict}]")
+
+    st.divider()
+
+    # ==============================
+    # Business Insight Section
+    # ==============================
+    st.subheader("Business Insight")
+    st.write(
+        """
+        This prediction helps financial institutions evaluate password policy strength.
+        By estimating crack time, organizations can:
+        - Improve security standards
+        - Reduce cyber risk exposure
+        - Increase customer trust
+        """
+    )
+
+    st.caption("Model based on log-transformed linear regression.")
 else:
-    display_time = f"{seconds:.2f} seconds"
+    st.info("Please enter a password to see the prediction.")
 
-# ==============================
-# Security Verdict
-# ==============================
-if length < 8:
-    verdict = "🔴 DANGER"
-    color = "red"
-elif length < 12:
-    verdict = "🟠 WEAK"
-    color = "orange"
-else:
-    verdict = "🟢 SECURE"
-    color = "green"
-
-# ==============================
-# Display Results
-# ==============================
-st.subheader("Prediction Result")
-st.write(f"**Estimated Crack Time:** {display_time}")
-st.markdown(f"**Security Verdict:** :{color}[{verdict}]")
-
-st.divider()
-
-# ==============================
-# Business Insight Section
-# ==============================
-st.subheader("Business Insight")
-st.write(
-    """
-    This prediction helps financial institutions evaluate password policy strength.
-    By estimating crack time, organizations can:
-    - Improve security standards
-    - Reduce cyber risk exposure
-    - Increase customer trust
-    """
-)
-
-st.caption("Model based on log-transformed linear regression.")
