@@ -96,7 +96,7 @@ st.header("Choose Your Plan")
 
 st.markdown("""
 <div style='display:flex; gap:20px;'>
-    <div style='background-color:#f0f2f6; padding:15px; border-radius:10px; flex:1;'>
+    <div style='background-color:#FF6B81; padding:15px; border-radius:10px; flex:1;'>
         <h3>Free Plan</h3>
         <ul>
             <li>Limited number of password analyses per day</li>
@@ -111,7 +111,7 @@ st.markdown("""
         </ul>
         <button style='padding:10px 15px; background-color:#1f77b4;color:white;border:none;border-radius:5px;'>Start Free</button>
     </div>
-    <div style='background-color:#f0f2f6; padding:15px; border-radius:10px; flex:1;'>
+    <div style='background-color:#FF6B81; padding:15px; border-radius:10px; flex:1;'>
         <h3>💎 Premium Plan</h3>
         <ul>
             <li>Unlimited password analyses</li>
