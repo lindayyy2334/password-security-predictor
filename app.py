@@ -7,11 +7,11 @@ import re
 # =========================
 st.set_page_config(page_title="Password Fortress", page_icon="🔐", layout="centered")
 
-# Landing page / commercial header
+# Landing Page / Commercial Header
 st.markdown("""
-<div style='background-color:#0E1117;padding:20px;border-radius:5px'>
+<div style='background-color:#0E1117;padding:25px;border-radius:10px'>
     <h1 style='color:white;text-align:center;'>🔐 Password Fortress</h1>
-    <p style='color:white;text-align:center;'>
+    <p style='color:white;text-align:center;font-size:18px;'>
         Protect your accounts with data-driven password strength predictions.
         Free version shows basic score. Premium unlocks advanced analysis and reports.
     </p>
@@ -31,10 +31,9 @@ password = st.text_input("Enter your password:", type="password")
 def analyze_password(pw):
     length = len(pw)
     
-    # Score starts with length weight
+    # Score based on length and complexity
     score = min(length * 5, 50)  # max 50 from length
     
-    # Complexity: add points for numbers, uppercase, lowercase, special chars
     if re.search(r"[A-Z]", pw):
         score += 10
     if re.search(r"[a-z]", pw):
@@ -44,10 +43,8 @@ def analyze_password(pw):
     if re.search(r"[!@#$%^&*(),.?\":{}|<>]", pw):
         score += 10
     
-    # Cap score at 100
     score = min(score, 100)
     
-    # Verdict
     if score < 50:
         verdict = "DANGER"
     elif score < 80:
@@ -55,13 +52,12 @@ def analyze_password(pw):
     else:
         verdict = "SECURE"
     
-    # Estimated crack time (approx based on length only)
+    # Estimated crack time (approx. based on length)
     w = 1.5
     b = -5
     log_seconds = w * length + b
     seconds = np.exp(log_seconds)
     
-    # Human-readable
     if seconds >= 31536000:
         display_time = f"{seconds/31536000:.1f} years"
     elif seconds >= 86400:
@@ -93,14 +89,40 @@ if password:
     st.write(f"Estimated Crack Time: {display_time}")
 
 # =========================
-# Sidebar Commercial / Premium
+# Subscription Plans / Landing Page Section
 # =========================
-st.sidebar.header("Unlock Premium Features")
-st.sidebar.write("""
-💎 **Premium Features**  
-- Detailed pattern analysis  
-- PDF reports for password audits  
-- Advanced scoring with dictionary & leaked passwords  
-- Bulk password check for teams
-""")
-st.sidebar.button("Subscribe Now")
+st.markdown("---")
+st.header("Choose Your Plan")
+
+st.markdown("""
+<div style='display:flex; gap:20px;'>
+    <div style='background-color:#f0f2f6; padding:15px; border-radius:10px; flex:1;'>
+        <h3>Free Plan</h3>
+        <ul>
+            <li>Limited number of password analyses per day</li>
+            <li>Basic security score</li>
+            <li>General strength classification</li>
+        </ul>
+        <p><strong>Purpose:</strong></p>
+        <ul>
+            <li>Attract users</li>
+            <li>Build trust</li>
+            <li>Encourage upgrade through feature limitation</li>
+        </ul>
+        <button style='padding:10px 15px; background-color:#1f77b4;color:white;border:none;border-radius:5px;'>Start Free</button>
+    </div>
+    <div style='background-color:#f0f2f6; padding:15px; border-radius:10px; flex:1;'>
+        <h3>💎 Premium Plan</h3>
+        <ul>
+            <li>Unlimited password analyses</li>
+            <li>Advanced risk scoring</li>
+            <li>Detailed crack-time estimation</li>
+            <li>Downloadable professional PDF reports</li>
+            <li>Personalized security recommendations</li>
+        </ul>
+        <p><strong>Revenue Model:</strong> Monthly or yearly subscription</p>
+        <p>This tier converts engaged users into paying customers by offering practical and professional value.</p>
+        <button style='padding:10px 15px; background-color:#1f77b4;color:white;border:none;border-radius:5px;'>Subscribe Now</button>
+    </div>
+</div>
+""", unsafe_allow_html=True)
