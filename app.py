@@ -5,13 +5,13 @@ import re
 # =========================
 # Page Config & Branding
 # =========================
-st.set_page_config(page_title="Password Fortress", page_icon="🔐", layout="centered")
+st.set_page_config(page_title="Password Fortress", page_icon="🔐", layout="wide")
 
-# Landing page header
+# Landing Page Header
 st.markdown("""
-<div style='background-color:#0E1117;padding:30px;border-radius:10px;margin-bottom:20px'>
-    <h1 style='color:white;text-align:center;font-size:36px;'>🔐 Password Fortress</h1>
-    <p style='color:white;text-align:center;font-size:18px;'>
+<div style='background: linear-gradient(90deg, #FF6B81, #FF4C7D); padding:40px; border-radius:15px; text-align:center;'>
+    <h1 style='color:white; font-size:48px;'>🔐 Password Fortress</h1>
+    <p style='color:white; font-size:20px;'>
         Protect your accounts with data-driven password strength predictions.<br>
         Free version shows basic score. Premium unlocks advanced analysis. Enterprise is for teams.
     </p>
@@ -32,12 +32,9 @@ def analyze_password(pw):
     if re.search(r"\d", pw): score += 10
     if re.search(r"[!@#$%^&*(),.?\":{}|<>]", pw): score += 10
     score = min(score, 100)
-    if score < 50:
-        verdict = "DANGER"
-    elif score < 80:
-        verdict = "WEAK"
-    else:
-        verdict = "SECURE"
+    if score < 50: verdict = "DANGER"
+    elif score < 80: verdict = "WEAK"
+    else: verdict = "SECURE"
     w, b = 1.5, -5
     seconds = np.exp(w*length + b)
     if seconds >= 31536000:
@@ -71,10 +68,14 @@ st.header("💼 Choose Your Plan")
 
 col1, col2, col3 = st.columns(3)
 
+# Styles for cards and buttons
+card_style = "padding:20px; border-radius:15px; box-shadow:2px 2px 15px rgba(0,0,0,0.1); background-color:white; margin-bottom:20px;"
+button_color = "#FF6B81"
+
 # Free Plan
 with col1:
-    st.markdown("""
-    <div style='background-color:#f0f2f6;padding:20px;border-radius:15px;box-shadow:2px 2px 10px rgba(0,0,0,0.1)'>
+    st.markdown(f"""
+    <div style='{card_style}'>
         <h3>Free Plan</h3>
         <ul>
             <li>Limited number of password analyses per day</li>
@@ -85,7 +86,7 @@ with col1:
         <ul>
             <li>Attract users</li>
             <li>Build trust</li>
-            <li>Encourage upgrade through feature limitation</li>
+            <li>Encourage upgrade</li>
         </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -94,8 +95,8 @@ with col1:
 
 # Premium Plan
 with col2:
-    st.markdown("""
-    <div style='background-color:#f0f2f6;padding:20px;border-radius:15px;box-shadow:2px 2px 10px rgba(0,0,0,0.1)'>
+    st.markdown(f"""
+    <div style='{card_style}'>
         <h3>💎 Premium Plan</h3>
         <ul>
             <li>Unlimited password analyses</li>
@@ -112,8 +113,8 @@ with col2:
 
 # Enterprise Plan
 with col3:
-    st.markdown("""
-    <div style='background-color:#f0f2f6;padding:20px;border-radius:15px;box-shadow:2px 2px 10px rgba(0,0,0,0.1)'>
+    st.markdown(f"""
+    <div style='{card_style}'>
         <h3>🏢 Enterprise Plan</h3>
         <ul>
             <li>Bulk password analysis</li>
