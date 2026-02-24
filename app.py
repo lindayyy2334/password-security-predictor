@@ -1,26 +1,12 @@
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
 
 # =========================
-# Page Config & Branding
+# Page Config
 # =========================
-st.set_page_config(
-    page_title="Password Fortress",
-    page_icon="🔐",
-    layout="centered"
-)
-
-st.markdown(
-    """
-    <div style='background-color:#0E1117;padding:15px;border-radius:5px'>
-        <h1 style='color:white;text-align:center;'>Password Fortress Security Predictor</h1>
-    </div>
-    """, unsafe_allow_html=True
-)
-
-st.write("🔹 Estimate how long it would take to crack a password based on its length.")
-st.write("Use the slider or input box below to enter your password length.")
+st.set_page_config(page_title="Password Fortress", page_icon="🔐")
+st.title("Password Fortress Security Predictor")
+st.write("🔹 Enter your password length to estimate its security score.")
 
 # =========================
 # Model Parameters
@@ -63,66 +49,24 @@ else:
     display_time = f"{seconds:.2f} seconds"
 
 # =========================
-# Security Verdict
+# Security Score
 # =========================
-if length < 8:
+# On donne un score simple basé sur la longueur (max 100)
+score = min(length * 8, 100)
+
+# Verdict basé sur le score
+if score < 50:
     verdict = "DANGER"
-    st.error(verdict)
-elif length < 12:
+    st.error(f"{verdict} — Score: {score}/100")
+elif score < 80:
     verdict = "WEAK"
-    st.warning(verdict)
+    st.warning(f"{verdict} — Score: {score}/100")
 else:
     verdict = "SECURE"
-    st.success(verdict)
+    st.success(f"{verdict} — Score: {score}/100")
 
+# =========================
+# Display Estimated Crack Time
+# =========================
 st.subheader("Estimated Crack Time")
 st.write(display_time)
-
-# =========================
-# Graph: Password Length vs Time
-# =========================
-lengths = np.arange(4, 21)
-times = predict_crack_time(lengths)
-
-fig, ax = plt.subplots()
-ax.plot(lengths, times, marker='o', color='#1f77b4')
-ax.set_yscale('log')  # logarithmic scale to show exponential growth
-ax.set_xlabel("Password Length")
-ax.set_ylabel("Time to Crack (seconds, log scale)")
-ax.set_title("Password Length vs Crack Time")
-st.pyplot(fig)
-
-# =========================
-# Premium Features (Sidebar)
-# =========================
-st.sidebar.header("Premium Features")
-premium = st.sidebar.checkbox("Activate Premium Mode")
-
-if premium:
-    st.sidebar.write("💎 Advanced Security Score & Recommendations")
-    
-    # Example: Score based on password length
-    score = min(length * 8, 100)  # max 100
-    st.sidebar.metric("Password Security Score", f"{score}/100")
-    
-    # Recommendations
-    if score < 50:
-        st.sidebar.warning("Consider increasing password length or complexity!")
-    elif score < 80:
-        st.sidebar.info("Medium strength password. Could be improved.")
-    else:
-        st.sidebar.success("Strong password! Well done.")
-
-# =========================
-# Footer / Business Pitch
-# =========================
-st.markdown(
-    """
-    ---
-    🔐 **Password Fortress** helps fintechs and security-conscious organizations
-    evaluate password strength with a scientific, data-driven approach.
-    
-    Premium subscription unlocks advanced scoring, recommendations, and PDF reports.
-    Enterprise clients can integrate via API for bulk analysis and dashboards.
-    """
-)
