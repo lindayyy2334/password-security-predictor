@@ -1,4 +1,4 @@
-
+streamlit-lottie
 streamlit
 numpy
 reportlab
