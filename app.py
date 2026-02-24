@@ -142,6 +142,7 @@ with col2:
     st.markdown(f"""
     <div style='{card_style}'>
         <h3>💎 Premium Plan</h3>
+        <p><strong>Price:</strong> $9.99 / month or $99 / year</p>
         <ul>
             <li>Unlimited analyses</li>
             <li>Advanced risk scoring</li>
@@ -160,6 +161,7 @@ with col3:
     st.markdown(f"""
     <div style='{card_style}'>
         <h3>🏢 Enterprise Plan</h3>
+        <p><strong>Price:</strong> Contact for quote</p>
         <ul>
             <li>Bulk password analysis</li>
             <li>Organizational risk overview</li>
