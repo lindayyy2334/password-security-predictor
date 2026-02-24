@@ -114,7 +114,7 @@ st.markdown("---")
 st.header("💼 Choose Your Plan")
 col1, col2, col3 = st.columns(3)
 
-card_style = "padding:20px; border-radius:15px; box-shadow:2px 2px 15px rgba(0,0,0,0.1); background-color:white; margin-bottom:20px;"
+card_style = "padding:20px; border-radius:15px; box-shadow:2px 2px 15px rgba(0,0,0,0.1); background-color:pink; margin-bottom:20px;"
 
 # Free Plan
 with col1:
